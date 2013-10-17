@@ -261,7 +261,7 @@ function p3_comment_status_meta_box_cb( $comment ) {
 	wp_nonce_field( 'p3_comment_update', 'p3_comment_update', false );
 	?>
 	<p>
-		<label for="p3_comment_status"><?php _e( 'Shadow' ); ?></label>;
+		<label for="p3_comment_status">Shadow</label>;
 		<input type="checkbox" id="comment-meta-p3-custom-status" name="p3_comment_status" value="shadow" class="" />
 	</p>
 	<?php if ( get_comment_meta( $comment->comment_ID, 'p3_comment_status', true ) == 'shadow' ) : ?>
