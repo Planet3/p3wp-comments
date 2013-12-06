@@ -308,9 +308,18 @@ function p3_comment_approve() {
 		exit("Go away!"); //If nonce check fails stop everything
 	}
 	$comment_id = $_REQUEST["comment_id"];
-	wp_set_comment_status( $comment_id, 'approve' );
-	update_comment_meta( $comment_id, 'p3_comment_status', '' );
-	echo 'Comment Approved. But this would be easier if you had javascript enabled';
+	$success = wp_set_comment_status( $comment_id, 'approve' );
+	$success = update_comment_meta( $comment_id, 'p3_comment_status', '' );
+
+	if ( $success = true ) {
+		$result['type'] = 'success';
+		echo 'Comment approved. But this would be easier if you had javascript enabled';
+	}
+	else {
+		$result['type'] = 'error';
+		echo "Something didn't work";
+	}
+
 	die();
 }
 
@@ -320,9 +329,18 @@ function p3_comment_shadow() {
 		exit("Go away!"); //If nonce check fails stop everything
 	}
 	$comment_id = $_REQUEST["comment_id"];
-	wp_set_comment_status( $comment_id, 'approve' );
-	update_comment_meta( $comment_id, 'p3_comment_status', 'shadow' );
-	echo 'Comment marked as shadow. But this would be easier if you had javascript enabled';
+	$success = wp_set_comment_status( $comment_id, 'approve' );
+	$success = update_comment_meta( $comment_id, 'p3_comment_status', 'shadow' );
+
+	if ( $success = true ) {
+		$result['type'] = 'success';
+		echo 'Comment marked as shadow. But this would be easier if you had javascript enabled';
+	}
+	else {
+		$result['type'] = 'error';
+		echo "Something didn't work";
+	}
+
 	die();
 }
 
@@ -332,7 +350,16 @@ function p3_comment_spam() {
 		exit("Go away!"); //If nonce check fails stop everything
 	}
 	$comment_id = $_REQUEST["comment_id"];
-	wp_set_comment_status( $comment_id, 'spam' );
-	echo 'Comment marked as spam. But this would be easier if you had javascript enabled';
+	$success = wp_set_comment_status( $comment_id, 'spam' );
+
+	if ( $success = true ) {
+		$result['type'] = 'success';
+		echo 'Comment marked as spam. But this would be easier if you had javascript enabled';
+	}
+	else {
+		$result['type'] = 'error';
+		echo "Something didn't work";
+	}
+
 	die();
 }
