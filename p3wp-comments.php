@@ -285,11 +285,11 @@ function p3_comment_status_edit_comment( $comment_id ) {
 
 
 add_filter( 'comment_text', 'p3_comment_moderation_buttons' );
-function p3_comment_moderation_buttons ( $comment ) {
+function p3_comment_moderation_buttons ( ) {
 	// Adds moderation buttons under every comment
 	$comment_id = get_comment_ID();
 	$text = get_comment_text();
-	$nonce = wp_create_nonce( $p3_comment_moderation );
+	$nonce = wp_create_nonce( 'p3_comment_moderation' );
 
 	$p3_approve_link = admin_url('admin-ajax.php?action=p3_comment_approve&comment_id='. $comment_id.'&nonce='.$nonce);
 	$p3_shadow_link = admin_url('admin-ajax.php?action=p3_comment_shadow&comment_id='. $comment_id .'&nonce='.$nonce);
@@ -298,4 +298,41 @@ function p3_comment_moderation_buttons ( $comment ) {
 
 	$p3_edit_links = '<div class="p3-edit-links"><a href="' . $p3_approve_link . '" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Approve</a> | <a href="' . $p3_shadow_link . '" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Shadow</a> | <a href="' . $p3_spam_link . '" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Spam</a></div>';
 	return $text . $p3_edit_links;
+}
+
+
+//Functions to mark comments as approved, shaddow or spam 
+add_action("wp_ajax_p3_comment_approve", "p3_comment_approve");
+function p3_comment_approve() {
+	if ( ! wp_verify_nonce( $_REQUEST['nonce'], 'p3_comment_moderation' ) ) {
+		exit("Go away!"); //If nonce check fails stop everything
+	}
+	$comment_id = $_REQUEST["comment_id"];
+	wp_set_comment_status( $comment_id, 'approve' );
+	update_comment_meta( $comment_id, 'p3_comment_status', '' );
+	echo 'Comment Approved. But this would be easier if you had javascript enabled';
+	die();
+}
+
+add_action("wp_ajax_p3_comment_shadow", "p3_comment_shadow");
+function p3_comment_shadow() {
+	if ( ! wp_verify_nonce( $_REQUEST['nonce'], 'p3_comment_moderation' ) ) {
+		exit("Go away!"); //If nonce check fails stop everything
+	}
+	$comment_id = $_REQUEST["comment_id"];
+	wp_set_comment_status( $comment_id, 'approve' );
+	update_comment_meta( $comment_id, 'p3_comment_status', 'shadow' );
+	echo 'Comment marked as shadow. But this would be easier if you had javascript enabled';
+	die();
+}
+
+add_action("wp_ajax_p3_comment_spam", "p3_comment_spam");
+function p3_comment_spam() {
+	if ( ! wp_verify_nonce( $_REQUEST['nonce'], 'p3_comment_moderation' ) ) {
+		exit("Go away!"); //If nonce check fails stop everything
+	}
+	$comment_id = $_REQUEST["comment_id"];
+	wp_set_comment_status( $comment_id, 'spam' );
+	echo 'Comment marked as spam. But this would be easier if you had javascript enabled';
+	die();
 }
