@@ -296,9 +296,10 @@ function p3_comment_moderation_buttons ( ) {
 	$p3_spam_link = admin_url('admin-ajax.php?action=p3_comment_spam&comment_id='. $comment_id .'&nonce='.$nonce);
 
 
-	$p3_edit_links = '<div class="p3-edit-links"><a href="' . $p3_approve_link . '" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Approve</a> | <a href="' . $p3_shadow_link . '" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Shadow</a> | <a href="' . $p3_spam_link . '" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Spam</a></div>';
+	$p3_edit_links = '<div class="p3-edit-links"><a class="p3-comment-moderation" href="' . $p3_approve_link . '" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Approve</a> | <a class="p3-comment-moderation" href="' . $p3_shadow_link . '" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Shadow</a> | <a class="p3-comment-moderation" href="' . $p3_spam_link . '" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Spam</a></div>';
 	return $text . $p3_edit_links;
 }
+
 
 
 //Functions to mark comments as approved, shaddow or spam 
@@ -380,7 +381,7 @@ function p3_comment_spam() {
 		echo "Something didn't work";
 	}
 
-	if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+	if( ! empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
 		$result = json_encode($result);
 		echo $result;
 	}
@@ -391,3 +392,12 @@ function p3_comment_spam() {
 	die();
 }
 
+
+add_action( 'init', 'p3_comment_meta_script_enqueuer' );
+function p3_comment_meta_script_enqueuer() {
+wp_register_script( "p3_comment_meta", plugins_url().'/p3wp-comments/js/p3_comment_meta.js', array('jquery') );
+	wp_localize_script( "p3_comment_meta", 'p3cmetaAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' )));
+
+	wp_enqueue_script( 'jquery' );
+	wp_enqueue_script( 'p3_comment_meta' );
+}
