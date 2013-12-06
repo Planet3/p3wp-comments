@@ -313,11 +313,20 @@ function p3_comment_approve() {
 
 	if ( $success = true ) {
 		$result['type'] = 'success';
-		echo 'Comment approved. But this would be easier if you had javascript enabled';
+		$result['comment_id'] = $_REQUEST["comment_id"];
 	}
 	else {
 		$result['type'] = 'error';
+		$result['comment_id'] = $_REQUEST["comment_id"];
 		echo "Something didn't work";
+	}
+
+	if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+		$result = json_encode($result);
+		echo $result;
+	}
+	else {
+		header("Location: ".$_SERVER["HTTP_REFERER"]);
 	}
 
 	die();
@@ -334,11 +343,20 @@ function p3_comment_shadow() {
 
 	if ( $success = true ) {
 		$result['type'] = 'success';
-		echo 'Comment marked as shadow. But this would be easier if you had javascript enabled';
+		$result['comment_id'] = $_REQUEST["comment_id"];
 	}
 	else {
 		$result['type'] = 'error';
+		$result['comment_id'] = $_REQUEST["comment_id"];
 		echo "Something didn't work";
+	}
+
+	if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+		$result = json_encode($result);
+		echo $result;
+	}
+	else {
+		header("Location: ".$_SERVER["HTTP_REFERER"]);
 	}
 
 	die();
@@ -354,12 +372,22 @@ function p3_comment_spam() {
 
 	if ( $success = true ) {
 		$result['type'] = 'success';
-		echo 'Comment marked as spam. But this would be easier if you had javascript enabled';
+		$result['comment_id'] = $_REQUEST["comment_id"];
 	}
 	else {
 		$result['type'] = 'error';
+		$result['comment_id'] = $_REQUEST["comment_id"];
 		echo "Something didn't work";
+	}
+
+	if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+		$result = json_encode($result);
+		echo $result;
+	}
+	else {
+		header("Location: ".$_SERVER["HTTP_REFERER"]);
 	}
 
 	die();
 }
+
