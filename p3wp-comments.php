@@ -283,3 +283,19 @@ function p3_comment_status_edit_comment( $comment_id ) {
 	}
 }
 
+
+add_filter( 'comment_text', 'p3_comment_moderation_buttons' );
+function p3_comment_moderation_buttons ( $comment ) {
+	// Adds moderation buttons under every comment
+	$comment_id = get_comment_ID();
+	$text = get_comment_text();
+	$nonce = wp_create_nonce( $p3_comment_moderation );
+
+	$p3_approve_link = admin_url('admin-ajax.php?action=p3_comment_approve&comment_id='. $comment_id.'&nonce='.$nonce);
+	$p3_shadow_link = admin_url('admin-ajax.php?action=p3_comment_shadow&comment_id='. $comment_id .'&nonce='.$nonce);
+	$p3_spam_link = admin_url('admin-ajax.php?action=p3_comment_spam&comment_id='. $comment_id .'&nonce='.$nonce);
+
+
+	$p3_edit_links = '<div class="p3-edit-links"><a href="' . $p3_approve_link . '" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Approve</a> | <a href="' . $p3_shadow_link . '" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Shadow</a> | <a href="' . $p3_spam_link . '" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Spam</a></div>';
+	return $text . $p3_edit_links;
+}
