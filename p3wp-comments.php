@@ -284,6 +284,12 @@ function p3_comment_status_edit_comment( $comment_id ) {
 }
 
 
+
+/*
+*
+* Front end editing
+* 
+ */
 add_filter( 'comment_text', 'p3_comment_moderation_buttons' );
 function p3_comment_moderation_buttons ( ) {
 	// Adds moderation buttons under every comment
