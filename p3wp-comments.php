@@ -284,26 +284,28 @@ function p3_comment_status_edit_comment( $comment_id ) {
 }
 
 
-
 /*
-*
 * Front end editing
-* 
  */
 add_filter( 'comment_text', 'p3_comment_moderation_buttons' );
 function p3_comment_moderation_buttons ( ) {
-	// Adds moderation buttons under every comment
-	$comment_id = get_comment_ID();
-	$text = get_comment_text();
-	$nonce = wp_create_nonce( 'p3_comment_moderation' );
+	if ( is_author() || current_user_can( 'moderate_comment' ) ) {
+		// Adds moderation buttons under every comment
+		$comment_id = get_comment_ID();
+		$text = get_comment_text();
+		$nonce = wp_create_nonce( 'p3_comment_moderation' );
 
-	$p3_approve_link = admin_url('admin-ajax.php?action=p3_comment_approve&comment_id='. $comment_id.'&nonce='.$nonce);
-	$p3_shadow_link = admin_url('admin-ajax.php?action=p3_comment_shadow&comment_id='. $comment_id .'&nonce='.$nonce);
-	$p3_spam_link = admin_url('admin-ajax.php?action=p3_comment_spam&comment_id='. $comment_id .'&nonce='.$nonce);
+		$p3_approve_link = admin_url('admin-ajax.php?action=p3_comment_approve&comment_id='. $comment_id.'&nonce='.$nonce);
+		$p3_shadow_link = admin_url('admin-ajax.php?action=p3_comment_shadow&comment_id='. $comment_id .'&nonce='.$nonce);
+		$p3_spam_link = admin_url('admin-ajax.php?action=p3_comment_spam&comment_id='. $comment_id .'&nonce='.$nonce);
 
 
-	$p3_edit_links = '<div class="p3-edit-links"><a class="p3-comment-moderation" href="' . $p3_approve_link . '" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Approve</a> | <a class="p3-comment-moderation" href="' . $p3_shadow_link . '" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Shadow</a> | <a class="p3-comment-moderation" href="' . $p3_spam_link . '" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Spam</a></div>';
-	return $text . $p3_edit_links;
+		$p3_edit_links = '<div class="p3-edit-links"><a class="p3-comment-moderation" href="' . $p3_approve_link . '" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Approve</a> | <a class="p3-comment-moderation" href="' . $p3_shadow_link . '" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Shadow</a> | <a class="p3-comment-moderation" href="' . $p3_spam_link . '" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Spam</a></div>';
+		return $text . $p3_edit_links;
+	}
+	else{
+		return get_comment_text();
+	}
 }
 
 
