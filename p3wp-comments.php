@@ -330,13 +330,13 @@ function p3_comment_approve() {
 		echo "Something didn't work";
 	}
 
-	if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+//	if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
 		$result = json_encode($result);
 		echo $result;
-	}
-	else {
-		header("Location: ".$_SERVER["HTTP_REFERER"]);
-	}
+//	}
+//	else {
+//		header("Location: ".$_SERVER["HTTP_REFERER"]);
+//	}
 
 	die();
 }
