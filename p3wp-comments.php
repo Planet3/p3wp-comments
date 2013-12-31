@@ -403,7 +403,7 @@ function p3_comment_spam() {
 
 add_action( 'init', 'p3_comment_meta_script_enqueuer' );
 function p3_comment_meta_script_enqueuer() {
-wp_register_script( "p3_comment_meta", plugins_url().'/p3wp-comments/js/p3_comment_meta.js', array('jquery') );
+	wp_register_script( "p3_comment_meta", plugins_url().'/p3wp-comments/js/p3_comment_meta.js', array('jquery') );
 	wp_localize_script( "p3_comment_meta", 'p3cmetaAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' )));
 
 	wp_enqueue_script( 'jquery' );
