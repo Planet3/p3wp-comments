@@ -338,7 +338,7 @@ function p3_comment_approve() {
 //		header("Location: ".$_SERVER["HTTP_REFERER"]);
 //	}
 
-	die();
+	die(); // this is required to return a proper result
 }
 
 add_action("wp_ajax_p3_comment_shadow", "p3_comment_shadow");
@@ -368,7 +368,7 @@ function p3_comment_shadow() {
 		header("Location: ".$_SERVER["HTTP_REFERER"]);
 	}
 
-	die();
+	die(); // this is required to return a proper result
 }
 
 add_action("wp_ajax_p3_comment_spam", "p3_comment_spam");
@@ -397,7 +397,7 @@ function p3_comment_spam() {
 		header("Location: ".$_SERVER["HTTP_REFERER"]);
 	}
 
-	die();
+	die(); // this is required to return a proper result
 }
 
 
