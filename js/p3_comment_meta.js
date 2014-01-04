@@ -1,7 +1,7 @@
 jQuery(document).ready( function() {
 
-	jQuery(".p3-comment-moderation").click( function() {
-		comment_id = jQuery(this).attr("data-comment_id")
+	jQuery(".p3-comment-moderation").click( function(e) {
+		e.preventDefault();
 		nonce = jQuery(this).attr("data-nonce")
 
 		jQuery.ajax({
