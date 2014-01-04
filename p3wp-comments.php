@@ -320,7 +320,7 @@ function p3_comment_approve() {
 	$success = wp_set_comment_status( $comment_id, 'approve' );
 	$success = update_comment_meta( $comment_id, 'p3_comment_status', '' );
 
-	if ( $success = true ) {
+	if ( $success == true ) {
 		$result['type'] = 'success';
 		$result['comment_id'] = $_REQUEST["comment_id"];
 	}
@@ -330,13 +330,13 @@ function p3_comment_approve() {
 		echo "Something didn't work";
 	}
 
-//	if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+	if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
 		$result = json_encode($result);
 		echo $result;
-//	}
-//	else {
-//		header("Location: ".$_SERVER["HTTP_REFERER"]);
-//	}
+	}
+	else {
+		header("Location: ".$_SERVER["HTTP_REFERER"]);
+	}
 
 	die(); // this is required to return a proper result
 }
@@ -350,7 +350,7 @@ function p3_comment_shadow() {
 	$success = wp_set_comment_status( $comment_id, 'approve' );
 	$success = update_comment_meta( $comment_id, 'p3_comment_status', 'shadow' );
 
-	if ( $success = true ) {
+	if ( $success == true ) {
 		$result['type'] = 'success';
 		$result['comment_id'] = $_REQUEST["comment_id"];
 	}
@@ -379,7 +379,7 @@ function p3_comment_spam() {
 	$comment_id = $_REQUEST["comment_id"];
 	$success = wp_set_comment_status( $comment_id, 'spam' );
 
-	if ( $success = true ) {
+	if ( $success == true ) {
 		$result['type'] = 'success';
 		$result['comment_id'] = $_REQUEST["comment_id"];
 	}
