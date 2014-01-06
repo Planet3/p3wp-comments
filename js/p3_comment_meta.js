@@ -9,7 +9,7 @@ jQuery(document).ready( function() {
 			type : "post",
 			dataType : "json",
 			url : p3cmetaAjax.ajaxurl,
-			data : {action: "p3_comment_approve", comment_id : comment_id, nonce : nonce},
+			data : {action: "p3_comment_moderation_save", comment_id : comment_id, nonce : nonce},
 			success: function(response) {
 				if(response.type == "success") {
 					alert("Success!")
