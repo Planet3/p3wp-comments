@@ -296,8 +296,8 @@ function p3_comment_moderation_buttons ( ) {
 		$nonce = wp_create_nonce( 'p3_comment_moderation' );
 
 		$p3_approve_link = admin_url('admin-ajax.php?action=p3_comment_moderation_save&p3moderation=approve&comment_id='. $comment_id.'&nonce='.$nonce);
-		$p3_shadow_link = admin_url('admin-ajax.php?action=p3_comment_moderation_save&mod=shadow&comment_id='. $comment_id .'&nonce='.$nonce);
-		$p3_spam_link = admin_url('admin-ajax.php?action=p3_comment_moderation_save&mod=spam&comment_id='. $comment_id .'&nonce='.$nonce);
+		$p3_shadow_link  = admin_url('admin-ajax.php?action=p3_comment_moderation_save&p3moderation=shadow&comment_id='. $comment_id .'&nonce='.$nonce);
+		$p3_spam_link    = admin_url('admin-ajax.php?action=p3_comment_moderation_save&p3moderation=spam&comment_id='. $comment_id .'&nonce='.$nonce);
 
 
 		$p3_edit_links = '<div class="p3-edit-links"><a class="p3-comment-moderation" href="' . $p3_approve_link . '" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Approve</a> | <a class="p3-comment-moderation" href="' . $p3_shadow_link . '" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Shadow</a> | <a class="p3-comment-moderation" href="' . $p3_spam_link . '" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Spam</a></div>';
@@ -319,39 +319,40 @@ function p3_comment_moderation_save(){
 	$p3_mod = $_REQUEST[ "p3moderation" ];
 	$comment_id = $_REQUEST[ "comment_id" ];
 
-	if ( $p3_mod = "approve" ) {
-		$success = wp_set_comment_status( $comment_id, 'approve' );
-		$success = update_comment_meta( $comment_id, 'p3_comment_status', '' );
-
-		if ( $success == true ) {
-			$result['type'] = 'success';
-			$result['comment_id'] = $_REQUEST["comment_id"];
-		}
-		else {
-			$result['type'] = 'error';
-			$result['comment_id'] = $_REQUEST["comment_id"];
-			echo "Something didn't work!!!";
-			echo $p3_mod;
-			echo $success;
-		}
-
-		if ( defined('DOING_AJAX') && DOING_AJAX ) {
-			wp_send_json( $result );
-		}
-		else {
-			header("Location: ".$_SERVER["HTTP_REFERER"]);
-		}
+	if ( $p3_mod == "approve" ) {
+		$success1 = wp_set_comment_status( $comment_id, 'approve' );
+		$success2 = update_comment_meta( $comment_id, 'p3_comment_status', '' );
+		$success = $success1 && $success2;
+	}
+	if ( $p3_mod == "shadow" ) {
+		$success1 = wp_set_comment_status( $comment_id, 'approve' );
+		$success2 = update_comment_meta( $comment_id, 'p3_comment_status', 'shadow' );
+		$success = $success1 && $success2;
+	}
+	if ( $p3_mod == "spam" ) {
+		$success = wp_set_comment_status( $comment_id, 'spam' );
 	}
 
 
-
-	if ( $p3_mod = "shadow" ) {
-
+	if ( $success == true ) {
+		$result['mod_action'] = $p3_mod;
+		$result['type'] = 'success';
+		$result['comment_id'] = $_REQUEST["comment_id"];
+	}
+	else {
+		$result['mod_action'] = $p3_mod;
+		$result['type'] = 'error';
+		$result['comment_id'] = $_REQUEST["comment_id"];
+		//echo "Something didn't work!!!";
 	}
 
-	if ( $p3_mod = "spam" ) {
-
+	if ( defined('DOING_AJAX') && DOING_AJAX ) {
+		wp_send_json( $result );
 	}
+	else {
+		header("Location: ".$_SERVER["HTTP_REFERER"]);
+	}
+
 
 	//die(); // this is required to return a proper result
 }
