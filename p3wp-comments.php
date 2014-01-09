@@ -311,7 +311,7 @@ if ( ( get_the_author_meta( 'ID' ) == get_current_user_id() ) || current_user_ca
 
 //Function to mark comments as approved, shaddow or spam 
 add_action("wp_ajax_p3_comment_moderation_save", "p3_comment_moderation_save");
-function p3_comment_moderation_save(){
+function p3_comment_moderation_save() {
 	if ( ! wp_verify_nonce( $_REQUEST['nonce'], 'p3_comment_moderation' ) ) {
 		exit("Go away!"); //If nonce check fails stop everything
 	}
