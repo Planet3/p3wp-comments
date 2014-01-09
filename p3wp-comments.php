@@ -279,7 +279,7 @@ function p3_comment_status_edit_comment( $comment_id ) {
 		update_comment_meta( $comment_id, 'p3_comment_status', esc_attr( $_POST['p3_comment_status'] ) );
 	}
 	else {
-		update_comment_meta( $comment_id, 'p3_comment_status', '' );
+		delete_comment_meta( $comment_id, 'p3_comment_status' );
 	}
 }
 
@@ -289,7 +289,7 @@ function p3_comment_status_edit_comment( $comment_id ) {
  */
 add_filter( 'comment_text', 'p3_comment_moderation_buttons' );
 function p3_comment_moderation_buttons ( ) {
-	if ( is_author() || current_user_can( 'moderate_comment' ) ) {
+if ( ( get_the_author_meta( 'ID' ) == get_current_user_id() ) || current_user_can( 'moderate_comments' ) ) {
 		// Adds moderation buttons under every comment
 		$comment_id = get_comment_ID();
 		$text = get_comment_text();
@@ -321,8 +321,14 @@ function p3_comment_moderation_save(){
 
 	if ( $p3_mod == "approve" ) {
 		$success1 = wp_set_comment_status( $comment_id, 'approve' );
-		$success2 = update_comment_meta( $comment_id, 'p3_comment_status', '' );
-		$success = $success1 && $success2;
+		$success2 = delete_comment_meta( $comment_id, 'p3_comment_status' );
+		if ( $success1 && $success2 ) {
+			$success = true;
+		}
+		else {
+			$success = false;
+		}
+	//$success = $success1 && $success2;
 	}
 	if ( $p3_mod == "shadow" ) {
 		$success1 = wp_set_comment_status( $comment_id, 'approve' );
