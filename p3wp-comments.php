@@ -279,7 +279,7 @@ function p3_comment_status_edit_comment( $comment_id ) {
 		update_comment_meta( $comment_id, 'p3_comment_status', esc_attr( $_POST['p3_comment_status'] ) );
 	}
 	else {
-		delete_comment_meta( $comment_id, 'p3_comment_status' );
+		update_comment_meta( $comment_id, 'p3_comment_status', '' );
 	}
 }
 
@@ -316,37 +316,38 @@ function p3_comment_moderation_save() {
 		exit("Go away!"); //If nonce check fails stop everything
 	}
 
-	$p3_mod = $_REQUEST[ "p3moderation" ];
+	$p3moderation= $_REQUEST[ "p3moderation" ];
 	$comment_id = $_REQUEST[ "comment_id" ];
 
-	if ( $p3_mod == "approve" ) {
-		$success1 = wp_set_comment_status( $comment_id, 'approve' );
-		$success2 = delete_comment_meta( $comment_id, 'p3_comment_status' );
-		if ( $success1 && $success2 ) {
-			$success = true;
-		}
-		else {
-			$success = false;
-		}
-	//$success = $success1 && $success2;
+	if ( $p3moderation == "approve" ) {
+		wp_set_comment_status( $comment_id, 'approve' );
+		update_comment_meta( $comment_id, 'p3_comment_status', '' );
+		$success = true;
 	}
-	if ( $p3_mod == "shadow" ) {
-		$success1 = wp_set_comment_status( $comment_id, 'approve' );
-		$success2 = update_comment_meta( $comment_id, 'p3_comment_status', 'shadow' );
-		$success = $success1 && $success2;
+
+	elseif ( $p3moderation == "shadow" ) {
+		wp_set_comment_status( $comment_id, 'approve' );
+		update_comment_meta( $comment_id, 'p3_comment_status', 'shadow' );
+		$success = true;
 	}
-	if ( $p3_mod == "spam" ) {
-		$success = wp_set_comment_status( $comment_id, 'spam' );
+
+	elseif ( $p3moderation == "spam" ) {
+		wp_set_comment_status( $comment_id, 'spam' );
+		$success = true;
+	}
+
+	else {
+		$success = false;
 	}
 
 
 	if ( $success == true ) {
-		$result['mod_action'] = $p3_mod;
+		$result['mod_action'] = $p3moderation;
 		$result['type'] = 'success';
 		$result['comment_id'] = $_REQUEST["comment_id"];
 	}
 	else {
-		$result['mod_action'] = $p3_mod;
+		$result['mod_action'] = $p3moderation;
 		$result['type'] = 'error';
 		$result['comment_id'] = $_REQUEST["comment_id"];
 		//echo "Something didn't work!!!";
