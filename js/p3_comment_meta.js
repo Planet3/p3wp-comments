@@ -7,6 +7,9 @@ jQuery(document).ready( function() {
 		var p3moderation = jQuery(this).attr("data-p3moderation")
 		console.log( nonce, comment_id, p3moderation )
 
+		jQuery("#comment-".concat(comment_id)).fadeOut( function() { 
+			jQuery(this).remove(); 
+		})
 
 		jQuery.ajax({
 			type : "post",
