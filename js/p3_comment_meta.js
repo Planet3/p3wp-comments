@@ -5,7 +5,7 @@ jQuery(document).ready( function() {
 		var comment_id = jQuery(this).attr("data-comment_id")
 		var nonce = jQuery(this).attr("data-nonce")
 		var p3moderation = jQuery(this).attr("data-p3moderation")
-		console.log( nonce, comment_id, p3moderation )
+		//console.log( nonce, comment_id, p3moderation )
 
 		jQuery("#comment-".concat(comment_id)).fadeOut( function() { 
 			jQuery(this).remove(); 
@@ -24,11 +24,11 @@ jQuery(document).ready( function() {
 			success: function(response) {
 				if(response.type == "success") {
 					//alert("Success!")
-					console.log ("success")
+					//console.log ("success")
 				}
 				else {
 					alert("Something went wrong and the comment couldn't be moderated. Please reload the page and try again! If this doesn't resolve the problem please contact the administrator")
-					console.log ("error")
+					//console.log ("error")
 				}
 			}
 		})
