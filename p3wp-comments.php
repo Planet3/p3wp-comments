@@ -302,6 +302,12 @@ if ( ( get_the_author_meta( 'ID' ) == get_current_user_id() ) || current_user_ca
 		if ( is_admin() ) {
 			$p3_edit_links = '';
 		}
+		elseif ( wp_get_comment_status( $comment_id ) == 'approved' && ! get_comment_meta( $comment_id, "p3_comment_status", true == 'shadow') ) {
+			$p3_edit_links = '<div class="p3-edit-links"><a class="p3-comment-moderation" href="' . $p3_shadow_link . '" data-p3moderation="shadow" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Shadow</a> | <a class="p3-comment-moderation" href="' . $p3_spam_link . '" data-p3moderation="spam" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Spam</a></div>';
+		}
+		elseif ( get_comment_meta( $comment_id, "p3_comment_status", true == 'shadow') ) {
+			$p3_edit_links = '<div class="p3-edit-links"><a class="p3-comment-moderation" href="' . $p3_approve_link . '" data-p3moderation="approve" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Approve</a> | <a class="p3-comment-moderation" href="' . $p3_spam_link . '" data-p3moderation="spam" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Spam</a></div>';
+		}
 		else {
 			$p3_edit_links = '<div class="p3-edit-links"><a class="p3-comment-moderation" href="' . $p3_approve_link . '" data-p3moderation="approve" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Approve</a> | <a class="p3-comment-moderation" href="' . $p3_shadow_link . '" data-p3moderation="shadow" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Shadow</a> | <a class="p3-comment-moderation" href="' . $p3_spam_link . '" data-p3moderation="spam" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Spam</a></div>';
 		}
