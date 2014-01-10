@@ -300,7 +300,7 @@ if ( ( get_the_author_meta( 'ID' ) == get_current_user_id() ) || current_user_ca
 		$p3_spam_link    = admin_url('admin-ajax.php?action=p3_comment_moderation_save&p3moderation=spam&comment_id='. $comment_id .'&nonce='.$nonce);
 
 
-		$p3_edit_links = '<div class="p3-edit-links"><a class="p3-comment-moderation" href="' . $p3_approve_link . '" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Approve</a> | <a class="p3-comment-moderation" href="' . $p3_shadow_link . '" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Shadow</a> | <a class="p3-comment-moderation" href="' . $p3_spam_link . '" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Spam</a></div>';
+		$p3_edit_links = '<div class="p3-edit-links"><a class="p3-comment-moderation" href="' . $p3_approve_link . '" data-p3moderation="approve" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Approve</a> | <a class="p3-comment-moderation" href="' . $p3_shadow_link . '" data-p3moderation="shadow" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Shadow</a> | <a class="p3-comment-moderation" href="' . $p3_spam_link . '" data-p3moderation="spam" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Spam</a></div>';
 		return $text . $p3_edit_links;
 	}
 	else{

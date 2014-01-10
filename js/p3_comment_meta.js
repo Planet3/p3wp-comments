@@ -4,7 +4,8 @@ jQuery(document).ready( function() {
 		e.preventDefault();
 		var comment_id = jQuery(this).attr("data-comment_id")
 		var nonce = jQuery(this).attr("data-nonce")
-	console.log( "nonce=", nonce, comment_id )
+		var p3moderation = jQuery(this).attr("data-p3moderation")
+		console.log( nonce, comment_id, p3moderation )
 
 
 		jQuery.ajax({
@@ -13,7 +14,7 @@ jQuery(document).ready( function() {
 			url : p3cmetaAjax.ajaxurl,
 			data : {
 				action : "p3_comment_moderation_save",
-				p3moderation : "approve",
+				p3moderation : p3moderation,
 				comment_id : comment_id,
 				nonce : nonce
 			},
