@@ -326,7 +326,7 @@ function p3_comment_moderation_save() {
 		exit("Go away!"); //If nonce check fails stop everything
 	}
 
-	$p3moderation= $_REQUEST[ "p3moderation" ];
+	$p3moderation = $_REQUEST[ "p3moderation" ];
 	$comment_id = $_REQUEST[ "comment_id" ];
 
 	if ( $p3moderation == "approve" ) {
