@@ -299,17 +299,27 @@ if ( ( get_the_author_meta( 'ID' ) == get_current_user_id() ) || current_user_ca
 		$p3_shadow_link  = admin_url('admin-ajax.php?action=p3_comment_moderation_save&p3moderation=shadow&comment_id='. $comment_id .'&nonce='.$nonce);
 		$p3_spam_link    = admin_url('admin-ajax.php?action=p3_comment_moderation_save&p3moderation=spam&comment_id='. $comment_id .'&nonce='.$nonce);
 
+		$p3_approve_button_f = '<a class="p3-comment-moderation" href="%s" data-p3moderation="approve" data-comment_id="%d" data-nonce="%s">Approve</a>';
+		$p3_approve_button = sprintf( $p3_approve_button_f, esc_url($p3_approve_link), esc_attr($comment_id), esc_attr($nonce) );
+
+		$p3_shadow_button_f = '<a class="p3-comment-moderation" href="%s" data-p3moderation="shadow" data-comment_id="%d" data-nonce="%s">Shadow</a>';
+		$p3_shadow_button = sprintf( $p3_shadow_button_f, esc_url($p3_shadow_link), esc_attr($comment_id), esc_attr($nonce) );
+
+		$p3_spam_button_f = '<a class="p3-comment-moderation" href="%s" data-p3moderation="spam" data-comment_id="%d" data-nonce="%s">Spam</a>';
+		$p3_spam_button = sprintf( $p3_spam_button_f, esc_url($p3_spam_link), esc_attr($comment_id), esc_attr($nonce) );
+
+
 		if ( is_admin() ) {
 			$p3_edit_links = '';
 		}
 		elseif ( wp_get_comment_status( $comment_id ) == 'approved' && ! get_comment_meta( $comment_id, "p3_comment_status", true == 'shadow') ) {
-			$p3_edit_links = '<div class="p3-edit-links"><a class="p3-comment-moderation" href="' . $p3_shadow_link . '" data-p3moderation="shadow" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Shadow</a> | <a class="p3-comment-moderation" href="' . $p3_spam_link . '" data-p3moderation="spam" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Spam</a></div>';
+			$p3_edit_links = '<div class="p3-edit-links">'.$p3_shadow_button.' | '.$p3_spam_button.'</div>';
 		}
 		elseif ( get_comment_meta( $comment_id, "p3_comment_status", true == 'shadow') ) {
-			$p3_edit_links = '<div class="p3-edit-links"><a class="p3-comment-moderation" href="' . $p3_approve_link . '" data-p3moderation="approve" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Approve</a> | <a class="p3-comment-moderation" href="' . $p3_spam_link . '" data-p3moderation="spam" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Spam</a></div>';
+			$p3_edit_links = '<div class="p3-edit-links">'.$p3_approve_button.' | '.$p3_spam_button.'</div>';
 		}
 		else {
-			$p3_edit_links = '<div class="p3-edit-links"><a class="p3-comment-moderation" href="' . $p3_approve_link . '" data-p3moderation="approve" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Approve</a> | <a class="p3-comment-moderation" href="' . $p3_shadow_link . '" data-p3moderation="shadow" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Shadow</a> | <a class="p3-comment-moderation" href="' . $p3_spam_link . '" data-p3moderation="spam" data-comment_id="' . $comment_id . '" data-nonce="' . $nonce . '">Spam</a></div>';
+		$p3_edit_links = '<div class="p3-edit-links">'.$p3_approve_button.' | '.$p3_shadow_button.' | '.$p3_spam_button.'</div>';
 		}
 		return $text . $p3_edit_links;
 	}
@@ -322,11 +332,11 @@ if ( ( get_the_author_meta( 'ID' ) == get_current_user_id() ) || current_user_ca
 //Function to mark comments as approved, shaddow or spam 
 add_action("wp_ajax_p3_comment_moderation_save", "p3_comment_moderation_save");
 function p3_comment_moderation_save() {
-	if ( ! wp_verify_nonce( $_REQUEST['nonce'], 'p3_comment_moderation' ) ) {
+	if ( ! isset($_REQUEST['nonce']) || ! wp_verify_nonce( $_REQUEST['nonce'], 'p3_comment_moderation' ) ) {
 		exit("Go away!"); //If nonce check fails stop everything
 	}
 
-	$p3moderation = $_REQUEST[ "p3moderation" ];
+	$p3moderation= $_REQUEST[ "p3moderation" ];
 	$comment_id = $_REQUEST[ "comment_id" ];
 
 	if ( $p3moderation == "approve" ) {
