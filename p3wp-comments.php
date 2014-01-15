@@ -2,6 +2,7 @@
 /*
 Plugin Name: P3 Comments
 Plugin URI: http://planet3.org
+Description: Comment moderation system for Planet3.0. Adds features like shadow comments.
 Version 1.0
 Author: Dan Moutal
 Author URI: http://ofdan.ca
@@ -283,13 +284,24 @@ function p3_comment_status_edit_comment( $comment_id ) {
 	}
 }
 
+function p3_comment_moderation_show() {
+	if ( ( get_the_author_meta( 'ID' ) == get_current_user_id() ) || current_user_can( 'moderate_comments' ) ) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
 
-/*
-* Front end editing
- */
+
+
+/************************
+*** Front end editing ***
+************************/
+
 add_filter( 'comment_text', 'p3_comment_moderation_buttons' );
 function p3_comment_moderation_buttons ( ) {
-if ( ( get_the_author_meta( 'ID' ) == get_current_user_id() ) || current_user_can( 'moderate_comments' ) ) {
+if ( p3_comment_moderation_show() ) {
 		// Adds moderation buttons under every comment
 		$comment_id = get_comment_ID();
 		$text = get_comment_text();
