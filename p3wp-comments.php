@@ -396,11 +396,13 @@ function p3_comment_moderation_save() {
 	//die(); // this is required to return a proper result
 }
 
-add_action( 'init', 'p3_comment_meta_script_enqueuer' );
-function p3_comment_meta_script_enqueuer() {
-	wp_register_script( "p3_comment_meta", plugins_url().'/p3wp-comments/js/p3_comment_meta.js', array('jquery') );
-	wp_localize_script( "p3_comment_meta", 'p3cmetaAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' )));
+if ( p3_comment_moderation_show() ) {
+	add_action( 'init', 'p3_comment_meta_script_enqueuer' );
+	function p3_comment_meta_script_enqueuer() {
+		wp_register_script( "p3_comment_meta", plugins_url().'/p3wp-comments/js/p3_comment_meta.js', array('jquery') );
+		wp_localize_script( "p3_comment_meta", 'p3cmetaAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' )));
 
-	wp_enqueue_script( 'jquery' );
-	wp_enqueue_script( 'p3_comment_meta' );
+		wp_enqueue_script( 'jquery' );
+		wp_enqueue_script( 'p3_comment_meta' );
+	}
 }
