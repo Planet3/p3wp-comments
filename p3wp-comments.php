@@ -406,3 +406,29 @@ if ( p3_comment_moderation_show() ) {
 		wp_enqueue_script( 'p3_comment_meta' );
 	}
 }
+
+// Prevent shadow comments from showing up in the recent comments widget. Also overwrites the widget options.
+function p3_alter_widget_comments( $args ) {
+	$args = array( 
+		'number' => 8, 
+		'status' => 'approve', 
+		'post_status' => 'publish',
+		'type' => 'comment',
+		'meta_query' => array(
+			'relation' => 'OR',
+			array( // Select comments that don't have the 'shadow' p3_comment_status meta
+				'key' => 'p3_comment_status',
+				'value' => 'shadow',
+				'compare' => '!='
+			),
+			array( // Select comments that don't have the p3_comment_status set
+				'key' => 'p3_comment_status',
+				'compare' => 'NOT EXISTS',
+				'value' => ''
+			)
+		)
+	);
+	return $args;
+}
+
+add_filter( 'widget_comments_args', 'p3_alter_widget_comments', 10, 1 );
