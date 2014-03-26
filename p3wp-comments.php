@@ -393,7 +393,7 @@ function p3_comment_moderation_save() {
 	}
 
 
-	//die(); // this is required to return a proper result
+	die(); // this is required to return a proper result
 }
 
 if ( p3_comment_moderation_show() ) {
