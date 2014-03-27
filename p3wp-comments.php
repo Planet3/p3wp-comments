@@ -9,17 +9,13 @@ Author URI: http://ofdan.ca
 License: GPLv2
  */
 
-register_activation_hook( __FILE__, 'p3_comments_activation' ); // Hook to run installation function
+//register_activation_hook( __FILE__, 'p3_comments_activation' ); // Hook to run installation function
 
 function p3_comments_activation() {
 	//Runs on plugin activation
-	global $wp_version;
-	if ( version_compare( $wp_version, '3.6' , '<' ) ) {
-		wp_die( 'This plugin needs a more recent version of WordPress' );
-	}
 }
 
-register_deactivation_hook( __FILE__, 'p3_comments_deactivation' ); // Hook to run deactivation function
+//register_deactivation_hook( __FILE__, 'p3_comments_deactivation' ); // Hook to run deactivation function
 
 function p3_comments_deactivation() {
 	//Runs on plugin deactivation
